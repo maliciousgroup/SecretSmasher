@@ -3,8 +3,9 @@ import concurrent.futures
 import netmiko
 import pathlib
 
-work_queue = asyncio.Queue()
 found = False
+work_queue = asyncio.Queue()
+
 red = "\x1b[31;1m"
 bold = "\x1b[1m"
 reset = "\x1b[0m"
@@ -153,9 +154,9 @@ if __name__ == '__main__':
         possible_secrets: list = return_list(str(arg.secrets))
         if len(possible_secrets) == 0:
             exit(f"{red}[x] - The 'secrets' option needs to be a file containing passwords to attempt{reset}")
-        else:
-            for x in possible_secrets:
-                work_queue.put_nowait(x)
+        for x in possible_secrets:
+            work_queue.put_nowait(x)
+
         intro()
 
         _executor = concurrent.futures.ThreadPoolExecutor()
